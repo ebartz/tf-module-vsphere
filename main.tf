@@ -135,7 +135,7 @@ resource "vsphere_virtual_machine" "vm" {
      properties = {
        "public-keys" = "${var.public_key}"
        "hostname" = "${var.name}" 
-       "useri-data" = "${data.template_cloudinit_config.config.rendered}"
+       "user-data" = "${data.template_cloudinit_config.config.rendered}"
      }
 
   }

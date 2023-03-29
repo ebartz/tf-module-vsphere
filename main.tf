@@ -152,3 +152,6 @@ output "public_ip" {
 output "hostname" {
   value = "${var.name}"
 }
+output "key" {
+  value = "${var.public_key}"
+}

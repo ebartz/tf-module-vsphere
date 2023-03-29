@@ -104,6 +104,10 @@ resource "vsphere_virtual_machine" "vm" {
   nested_hv_enabled = true 
   guest_id = "${data.vsphere_virtual_machine.template.guest_id}"
 
+  cdrom {
+    client_device = true
+  }
+
   scsi_type = "${data.vsphere_virtual_machine.template.scsi_type}"
 
   network_interface {

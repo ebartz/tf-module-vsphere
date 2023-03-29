@@ -133,8 +133,6 @@ resource "vsphere_virtual_machine" "vm" {
 
   vapp {
      properties = {
-       "guestinfo.public-keys" = "${var.public_key}"
-       "guestinfo.hostname" = "${var.name}" 
        "public-keys" = "${var.public_key}"
        "hostname" = "${var.name}" 
      }

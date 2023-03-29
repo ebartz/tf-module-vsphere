@@ -122,6 +122,9 @@ resource "vsphere_virtual_machine" "vm" {
     thin_provisioned = "${data.vsphere_virtual_machine.template.disks.0.thin_provisioned}"
   }
 
+  clone {
+    template_uuid = "${data.vsphere_virtual_machine.template.id}"
+  }
 
   extra_config = {
     "guestinfo.userdata.encoding" = "gzip+base64"
@@ -136,9 +139,6 @@ resource "vsphere_virtual_machine" "vm" {
       "hostname" = "${var.name}" 
     }
 
-  clone {
-    template_uuid = "${data.vsphere_virtual_machine.template.id}"
-  }
 }
 
 output "private_ip" {

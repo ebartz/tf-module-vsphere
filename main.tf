@@ -126,8 +126,8 @@ resource "vsphere_virtual_machine" "vm" {
   extra_config = {
     "guestinfo.userdata.encoding" = "gzip+base64"
     "guestinfo.userdata" = "${data.template_cloudinit_config.config.rendered}"
-    "guestinfo.public-keys" = "${var.public_key}"
-    "guestinfo.hostname" = "${var.name}" 
+    "public-keys" = "${var.public_key}"
+    "hostname" = "${var.name}" 
   }
 
   clone {

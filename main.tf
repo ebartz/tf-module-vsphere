@@ -80,7 +80,7 @@ data "template_file" "script" {
 # Render a multi-part cloud-init config making use of the part
 # above, and other source files
 data "template_cloudinit_config" "config" {
-  gzip          = true
+  gzip          = false
   base64_encode = true
 
   # Main cloud-config configuration file.
@@ -124,11 +124,6 @@ resource "vsphere_virtual_machine" "vm" {
 
   clone {
     template_uuid = "${data.vsphere_virtual_machine.template.id}"
-  }
-
-  extra_config = {
-    "guestinfo.userdata.encoding" = "gzip+base64"
-    "guestinfo.userdata" = "${data.template_cloudinit_config.config.rendered}"
   }
 
   vapp {

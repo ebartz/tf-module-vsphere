@@ -131,13 +131,15 @@ resource "vsphere_virtual_machine" "vm" {
     "guestinfo.userdata" = "${data.template_cloudinit_config.config.rendered}"
   }
 
- vapp {
-    properties = {
-      "guestinfo.public-keys" = "${var.public_key}"
-      "guestinfo.hostname" = "${var.name}" 
-      "public-keys" = "${var.public_key}"
-      "hostname" = "${var.name}" 
-    }
+  vapp {
+     properties = {
+       "guestinfo.public-keys" = "${var.public_key}"
+       "guestinfo.hostname" = "${var.name}" 
+       "public-keys" = "${var.public_key}"
+       "hostname" = "${var.name}" 
+     }
+
+  }
 
 }
 
@@ -151,7 +153,4 @@ output "public_ip" {
 
 output "hostname" {
   value = "${var.name}"
-}
-output "key" {
-  value = "${var.public_key}"
 }

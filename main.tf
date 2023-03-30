@@ -64,29 +64,6 @@ data "vsphere_virtual_machine" "template" {
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
-# Render a part using a `template_file`
-data "template_file" "script" {
-  template = "${file("cloud-config.tpl")}"
-
-  vars = {
-    public_key = "${var.public_key}"
-  }
-}
-
-# Render a multi-part cloud-init config making use of the part
-# above, and other source files
-data "template_cloudinit_config" "config" {
-  gzip          = true
-  base64_encode = true
-
-  # Main cloud-config configuration file.
-  part {
-    content_type = "text/cloud-config"
-    content      = "${data.template_file.script.rendered}"
-  }
-
-}
-
 resource "vsphere_virtual_machine" "vm" {
   name             = "${var.name}"
   resource_pool_id = "${data.vsphere_resource_pool.pool.id}"
@@ -116,6 +93,10 @@ resource "vsphere_virtual_machine" "vm" {
     size             = "${data.vsphere_virtual_machine.template.disks.0.size}"
     eagerly_scrub    = "${data.vsphere_virtual_machine.template.disks.0.eagerly_scrub}"
     thin_provisioned = "${data.vsphere_virtual_machine.template.disks.0.thin_provisioned}"
+  }
+
+  clone {
+    template_uuid = "${data.vsphere_virtual_machine.template.id}"
   }
 
   vapp {

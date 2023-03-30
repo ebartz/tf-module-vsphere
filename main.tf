@@ -5,6 +5,7 @@ variable "memory" {}
 variable "disk" {}
 variable "image"{}
 variable "nested-hv"{}
+variable "cloud-config" {}
 
 variable "vcenter" {}
 variable "vsphere_user" {}
@@ -117,15 +118,11 @@ resource "vsphere_virtual_machine" "vm" {
     thin_provisioned = "${data.vsphere_virtual_machine.template.disks.0.thin_provisioned}"
   }
 
-  clone {
-    template_uuid = "${data.vsphere_virtual_machine.template.id}"
-  }
-
   vapp {
      properties = {
        "public-keys" = "${var.public_key}"
        "hostname" = "${var.name}"
-       "user-data" = "${data.template_cloudinit_config.config.rendered}"
+       "user-data" = "${var.cloud-config}"
      }
   }
 }

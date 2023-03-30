@@ -4,11 +4,11 @@ variable "cpu" {}
 variable "memory" {}
 variable "disk" {}
 variable "image"{}
+variable "nested-hv"{}
 
 variable "vcenter" {}
 variable "vsphere_user" {}
 variable "vsphere_password" {}
-
 
 variable "vsphere_folder" {}
 variable "vsphere_datacenter" {}
@@ -17,18 +17,13 @@ variable "vsphere_cluster" {}
 variable "vsphere_network" {}
 variable "vsphere_resource_pool" {}
 
-
-
 terraform {
   required_providers {
     vsphere = {
       version = "1.24.3"
     }
-  }
-
-  
+  }  
 }
-
 
 provider "vsphere" {
   user           = "${var.vsphere_user}"
@@ -101,7 +96,7 @@ resource "vsphere_virtual_machine" "vm" {
   memory   = "${var.memory}"
   memory_hot_add_enabled = true
   cpu_hot_add_enabled = true
-  nested_hv_enabled = true 
+  nested_hv_enabled = "${var.nested-hv}" 
   guest_id = "${data.vsphere_virtual_machine.template.guest_id}"
 
   cdrom {
@@ -132,7 +127,6 @@ resource "vsphere_virtual_machine" "vm" {
        "hostname" = "${var.name}" 
      }
   }
-
 }
 
 output "private_ip" {

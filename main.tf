@@ -103,7 +103,7 @@ resource "vsphere_virtual_machine" "vm" {
      properties = {
        "public-keys" = "${var.public_key}"
        "hostname" = "${var.name}"
-       "user-data" = "${var.cloud-config}"
+       "user-data" = base64encode(var.cloud-config)
      }
   }
 }

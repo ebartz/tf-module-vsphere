@@ -75,7 +75,7 @@ data "template_file" "script" {
 # Render a multi-part cloud-init config making use of the part
 # above, and other source files
 data "template_cloudinit_config" "config" {
-  gzip          = false
+  gzip          = true
   base64_encode = true
 
   # Main cloud-config configuration file.
@@ -124,7 +124,8 @@ resource "vsphere_virtual_machine" "vm" {
   vapp {
      properties = {
        "public-keys" = "${var.public_key}"
-       "hostname" = "${var.name}" 
+       "hostname" = "${var.name}"
+       "user-data" = "${data.template_cloudinit_config.config.rendered}"
      }
   }
 }
